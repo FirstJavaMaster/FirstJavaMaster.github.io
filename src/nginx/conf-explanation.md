@@ -18,6 +18,11 @@ proxy_set_header X-Forwarded-Proto "https";
 
     openssl x509 -in \*.idx365.com.cer -noout -text
 
+也有可能需要使用以下的命令来指定编码方式:
+
+    openssl x509 -inform pem -in cerfile.cer -noout -text
+    openssl x509 -inform der -in cerfile.cer -noout -text
+
 如果申请泛域名,则最好是使用DNS验证的方式
 
 ```
