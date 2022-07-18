@@ -75,6 +75,7 @@ imp topicis/topicis file=/tmp_reg.dmp log=import2.log full=y ignore=y;
 
 正常情况下,数据库表会自动创建,数据可以顺利导入.
 
+
 ## 其他命令
 
 + 删除用户

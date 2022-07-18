@@ -1,70 +1,102 @@
-## ²é¿´ºÍµ÷ÕûoracleÊı¾İ¿âµÄ×î´óÁ¬½ÓÊı
+## æŸ¥çœ‹å’Œè°ƒæ•´oracleæ•°æ®åº“çš„æœ€å¤§è¿æ¥æ•°
 
-### µÇÂ¼
+### ç™»å½•
 
     sqlplus / as sysdba
 
-#### ÇĞ»»ÓÃ»§
+#### åˆ‡æ¢ç”¨æˆ·
 
-*(Ö®ËùÒÔÇĞ»»ÓÃ»§ÊÇÒòÎªÆäËûÓÃ»§Ê¹ÓÃsqlplusÃüÁîÊ±¾­³£»áÈ±ÉÙ»·¾³±äÁ¿»òÖ´ĞĞÈ¨ÏŞ)*
+*(ä¹‹æ‰€ä»¥åˆ‡æ¢ç”¨æˆ·æ˜¯å› ä¸ºå…¶ä»–ç”¨æˆ·ä½¿ç”¨sqlpluså‘½ä»¤æ—¶ç»å¸¸ä¼šç¼ºå°‘ç¯å¢ƒå˜é‡æˆ–æ‰§è¡Œæƒé™)*
 
     su oracle
 
-#### ÉèÖÃ»·¾³±äÁ¿
+#### è®¾ç½®ç¯å¢ƒå˜é‡
 
-ÔÚshellÖĞÖ´ĞĞÏÂÃæµÄÃüÁî. **×¢ÒâÆäÖµÒªÒÔÊµ¼Ê°²×°µÄÊı¾İ¿âÎª×¼**
+åœ¨shellä¸­æ‰§è¡Œä¸‹é¢çš„å‘½ä»¤. **æ³¨æ„å…¶å€¼è¦ä»¥å®é™…å®‰è£…çš„æ•°æ®åº“ä¸ºå‡†**
 
     export ORACLE_HOME=/u01/app/oracle/12c
     export ORACLE_SID=orcl
 
 
-### ²é¿´µ±Ç°ÒÑÊ¹ÓÃµÄÁ¬½ÓÊı
+### æŸ¥çœ‹å½“å‰å·²ä½¿ç”¨çš„è¿æ¥æ•°
 
     SQL> select count(*) from v$process; 
 
-### ²é¿´×î´óÁ¬½ÓÊıºÍ»á»°Êı
+### æŸ¥çœ‹æœ€å¤§è¿æ¥æ•°å’Œä¼šè¯æ•°
 
     SQL> show parameter processes;
     SQL> show parameter sessions;
 
-### ĞŞ¸ÄÁ¬½ÓÊı
+### ä¿®æ”¹è¿æ¥æ•°
 
     SQL> alter system set processes = 2000 scope = spfile;
     SQL> alter system set sessions=2205 scope=spfile;
     SQL> shutdown immediate;
     SQL> startup;
 
-### Ö´ĞĞÊ±Òì³£µÄ´¦Àí
+### æ‰§è¡Œæ—¶å¼‚å¸¸çš„å¤„ç†
 
-#### ÄÚ´æ²»×ã
+#### å†…å­˜ä¸è¶³
 
-Ò»°ã»áÌáÊ¾ÈçÏÂ:
+ä¸€èˆ¬ä¼šæç¤ºå¦‚ä¸‹:
 
     ORA-00821: Specified value of sga_target  **M is too small, needs to be at least **M
 
-±¨´íÔ­ÒòÊÇµ÷ÕûÁËÁ¬½ÓÊı£¬ĞèÏàÓ¦ĞŞ¸ÄÄÚ´æ´óĞ¡£º
+æŠ¥é”™åŸå› æ˜¯è°ƒæ•´äº†è¿æ¥æ•°ï¼Œéœ€ç›¸åº”ä¿®æ”¹å†…å­˜å¤§å°ï¼š
 
     SQL> create pfile='/u01/app/oracle/12c/dbs/initGSP.ora' from spfile;
     SQL> quit
 
-È»ºóÔÚshellÖĞ, Ê¹ÓÃoracleÓÃ»§Ö´ĞĞ£¬ĞŞ¸ÄÄÚ´æ´óĞ¡
+ç„¶ååœ¨shellä¸­, ä½¿ç”¨oracleç”¨æˆ·æ‰§è¡Œï¼Œä¿®æ”¹å†…å­˜å¤§å°
 
     vi /u01/app/oracle/12c/dbs/initGSP.ora
 
-ÕÒµ½
+æ‰¾åˆ°
 
     *.sga_target=768m
 
-ĞŞ¸Ä³É£¨ÉÏÃæ±¨´íµÄÖµ  needs to be at least **M)
+ä¿®æ”¹æˆï¼ˆä¸Šé¢æŠ¥é”™çš„å€¼  needs to be at least **M)
 
     *.sga_target=1768m
 
-È»ºóÖØĞÂÆô¶¯Êı¾İ¿â
+ç„¶åé‡æ–°å¯åŠ¨æ•°æ®åº“
 
     SQL> startup pfile='/u01/app/oracle/12c/dbs/initGSP.ora';
 
-**Èç¹ûÉÏÃæÒ»¾äÆô¶¯±¨´í£¬Îñ±Ø½â¾ö´íÎóºóÔÙÖ´ĞĞÏÂÃæµÄÓï¾ä**
+**å¦‚æœä¸Šé¢ä¸€å¥å¯åŠ¨æŠ¥é”™ï¼ŒåŠ¡å¿…è§£å†³é”™è¯¯åå†æ‰§è¡Œä¸‹é¢çš„è¯­å¥**
 
     SQL> create spfile from pfile='/u01/app/oracle/12c/dbs/initGSP.ora';
     SQL> shutdown immediate;
     SQL> startup;
+
+
+## æ•°æ®æ³µå¯¼å‡ºæŠ¥é”™ ORA-31634: job already exists
+
+éœ€æ¸…ç†dba_datapump_jobsè¡¨çš„è®°å½•ï¼Œé¦–å…ˆæŸ¥è¯¢ç°æœ‰è®°å½•ï¼š
+
+```oracle
+select 'drop table ' || owner_name || '.' || job_name || ';'
+from dba_datapump_jobs
+where state = 'NOT RUNNING';
+```
+
+æ‹·è´å‡ºæŸ¥è¯¢ç»“æœæ‰§è¡Œå³å¯ã€‚
+
+
+## æŸ¥è¯¢è¡¨ç©ºé—´ä½¿ç”¨æƒ…å†µ
+
+```oracle
+SELECT a.tablespace_name,
+       total / (1024 * 1024 * 1024),
+       free / (1024 * 1024 * 1024),
+       (total - free) / (1024 * 1024 * 1024)
+FROM (SELECT tablespace_name, SUM(bytes) free
+      FROM dba_free_space
+      GROUP BY tablespace_name) a,
+     (SELECT tablespace_name, SUM(bytes) total
+      FROM dba_data_files
+      GROUP BY tablespace_name) b
+WHERE a.tablespace_name = b.tablespace_name
+order by a.tablespace_name;
+```
+
