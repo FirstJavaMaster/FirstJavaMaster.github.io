@@ -1,9 +1,15 @@
 ## 数据库备份
 
-+ 备份数据库
-`mysqldump -ucloud -p index_cloud > data.sql;`
+### 备份数据库
 
-+ 导出成csv文件
+```shell
+mysqldump -ucloud -p index_cloud > index_cloud.sql;
+```
+
+mysqldump的默认参数即可导出导入, 因为其默认开启了 `--opt` 参数, 
+它是 `--add-drop-table --addlocks --create-options --disable-keys --extended-insert --lock-tables --quick --set-charset` 的缩写.
+
+### 导出成csv文件
 
 ```
 select *
