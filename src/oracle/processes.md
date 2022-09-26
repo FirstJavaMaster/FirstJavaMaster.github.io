@@ -123,3 +123,62 @@ WHERE a.tablespace_name = b.tablespace_name
 order by a.tablespace_name;
 ```
 
+## session相关
+
++ 查询session
+
+```oracle
+select *
+from v$session;
+```
+
++ 查询被锁定的语句
+```oracle
+select *
+from v$locked_object;
+```
+
++ 查看数据库引起锁表的SQL语句
+```oracle
+-- 查看数据库引起锁表的SQL语句
+SELECT A.USERNAME,
+       A.MACHINE,
+       A.PROGRAM,
+       A.SID,
+       A.SERIAL#,
+       A.STATUS,
+       A.PORT,
+       C.PIECE,
+       C.SQL_TEXT
+FROM V$SESSION A,
+     V$SQLTEXT C
+WHERE A.SID IN (SELECT DISTINCT T2.SID
+                FROM V$LOCKED_OBJECT T1,
+                     V$SESSION T2
+                WHERE T1.SESSION_ID = T2.SID)
+  AND A.SQL_ADDRESS = C.ADDRESS(+)
+ORDER BY A.SERIAL#, C.PIECE;
+```
+
++ 解锁语句
+```oracle
+SELECT 'ALTER SYSTEM KILL SESSION ''' || A.SID || ',' || A.SERIAL# || ''';'
+FROM V$SESSION A
+WHERE A.SID IN (SELECT DISTINCT T2.SID
+                FROM V$LOCKED_OBJECT T1,
+                     V$SESSION T2
+                WHERE T1.SESSION_ID = T2.SID);
+```
+
++ 查询cpu占用的语句(pid需替换成实际值)
+```oracle
+SELECT sql_text
+FROM v$sqltext a
+WHERE (a.hash_value, a.address) IN
+      (SELECT DECODE(sql_hash_value, 0, prev_hash_value, sql_hash_value),
+              DECODE(sql_hash_value, 0, prev_sql_addr, sql_address)
+       FROM v$session b
+       WHERE b.paddr =
+             (SELECT addr FROM v$process c WHERE c.spid = 'pid'))
+ORDER BY piece;
+```
