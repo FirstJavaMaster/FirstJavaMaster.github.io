@@ -1,14 +1,37 @@
 ## 查看和调整oracle数据库的最大连接数
 
-### 登录
+### 登录三部曲
 
-    sqlplus / as sysdba
+```shell
+# 切换用户
+su - oracle
 
-#### 切换用户
+# 直接登录
+sqlplus / as sysdba
 
-*(之所以切换用户是因为其他用户使用sqlplus命令时经常会缺少环境变量或执行权限)*
+# 或者使用下面的命令
+sqlplus /nolog
+connect /as sysdba
+```
 
-    su oracle
+### 监听
+```shell
+# 监听状态
+lsnrctl status
+# 关闭监听
+lsnrctl stop
+# 启动监听
+lsnrctl start
+```
+
+### 数据库的启动与停止
+```shell
+# 停止
+shutdown immediate
+# 启动
+startup
+```
+
 
 #### 设置环境变量
 
